@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-project(Chapter13)
+project(RBTree)
 
 # Download and unpack googletest at configure time
-configure_file(CMakeLists.txt.in Chapter13/CMakeLists.txt)
+configure_file(CMakeLists.txt.in RBTree/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
         RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Chapter13 )
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/RBTree )
 if(result)
     message(FATAL_ERROR "CMake step for googletest failed: ${result}")
 endif()
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
         RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Chapter13 )
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/RBTree )
 if(result)
     message(FATAL_ERROR "Build step for googletest failed: ${result}")
 endif()
@@ -35,6 +35,6 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed.
-add_executable(out main.cpp tests.cpp)
+add_executable(out main.cpp tests.cpp RBTree.h TreeNode.h)
 target_link_libraries(out gtest_main)
 add_test(NAME example_test COMMAND example)
