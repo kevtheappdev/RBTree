@@ -1,69 +1,63 @@
-#include "TreeNode.h"
+#include <iostream>
+#include <stack>
+#include <unordered_map>
+#include <algorithm>
 
+#ifndef RBTREE_H
+#define RBTREE_H
 
 using namespace std;
 
-template<typename T>
+class RBTree;
+
+
+class TreeNode {
+public:
+    enum Color {
+        BLACK, RED
+    };
+
+    int key;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode* parent;
+    Color color;
+
+    TreeNode(int k, TreeNode* nilPtr);
+
+    TreeNode(const TreeNode& rhs);
+
+    //constructor for NIL
+    TreeNode() : color(BLACK), left(nullptr), right(nullptr), parent(nullptr) {}
+private:
+
+};
+
 class RBTree {
-private:
-    enum NodeColor {
-        Red,
-        Black
-    };
-    
-    struct TreeNode {
-        T val;
-        TreeNode *p;
-        TreeNode *left;
-        TreeNode *right;
-
-        NodeColor color;
-
-        /* constructors */
-        TreeNode(T val, TreeNode* left = nil, TreeNode* right = nil) : val(val), p(nil), left(nil), right(nil), color(Black) {}
-        TreeNode() : color(Black) {}
-    };
-
-private:
-    TreeNode* root;
-    int _size; 
-    const static TreeNode * const nil = new TreeNode(); //always point to the same thing, that thing never changes, so two consts
+    int size;
 
 public:
-    RBTree() :  root(nil), _size(0) {}
-    
-    void insert(T key) {
-        TreeNode* x = root;
-        TreeNode* y = nil;
-        TreeNode* z = new TreeNode(key);
+    //constructor for empty tree
+    RBTree();
 
-        while (x != nil) { 
-            y = x;
-            if (z->val < x->val)
-                x = x->left;
-            else
-                x = x->right;
-        }
-        z->p = y;
+    //copy constructor
+    RBTree(const RBTree& rhs);
 
-        if (y == nil) // empty case
-            root = z;
-        else if (key < y->val)
-            y->left = z;
-        else y->right = z;
+    //constructor for tree with 1 node
+    RBTree(int k);
 
-        z->color = Red; // currently black by default
-        ++_size;
-        RBInsertFixup(z);
-    }
+    void insert(int k);
+    void insertMany(const vector<int>& keys);
 
-    void RBInsertFixup(TreeNode* z) {
-        while (z->p->color == Red) { // while nodes parent is red
-            if (z->p == z->p->p->left) {
-                y = z->p->p->right;
-                
-            }
-        }
-        root->color = Black;
-    }
+    void leftRotation(TreeNode* x);
+    void rightRotation(TreeNode* y);
+
+    vector<int> inorderTraversal();
+
+    TreeNode* root;
+    static TreeNode* NIL;
+private:
+    void inorderTraversal(TreeNode* current, vector<int>& res);
+    void RBInsertFixup(TreeNode* z);
 };
+#endif //RBTREE_H
